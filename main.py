@@ -68,7 +68,7 @@ def do_file( file, lengths, flags ):
         width, height = generate_width_and_height( flags[ "set_height" ], length, root_width, root_height )
         if first:
             first = False
-        if not flags[ "gen_info" ]:
+        if not flags[ "info_only" ]:
             new_filename = f"{basename}{extension}" if first else f"{basename}-{width}x{height}{extension}"
             thumbnail = image.resize( ( width, height ), Image.ANTIALIAS )
             thumbnail.save( f"{sizes_directory}/{new_filename}" )
