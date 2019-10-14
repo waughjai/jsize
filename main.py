@@ -50,7 +50,10 @@ def do_file( file, lengths, flags ):
     localfile = os.path.splitext( os.path.basename( file ) )
     basename = localfile[ 0 ]
     extension = localfile[ 1 ]
-    image = Image.open( file )
+    try:
+        image = Image.open( file )
+    except FileNotFoundError:
+        return f"{file} not found."
     size = image.size
     root_width = size[ 0 ]
     root_height = size[ 1 ]
@@ -81,8 +84,20 @@ def do_file( file, lengths, flags ):
         info_file.close()
     return True
 
+def program_info():
+    return """Version: JSize 0.1.0
+Usage: jsize [options ...] file [options ...] size [ [options ...] sizes...]
+
+Settings:
+  -h or --height        base sizes on height instead of width
+  -i or --info          generate info strings
+  -I or --info_only     generate only info strings
+    """
+
 def run():
     ( file, widths, flags ) = get_arguments()
+    if file == None or not widths:
+        return program_info()
     if os.path.isdir( file ):
         for f in os.listdir( file ):
             full_filename = f"{file}/{f}"
